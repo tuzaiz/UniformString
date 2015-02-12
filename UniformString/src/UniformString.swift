@@ -20,8 +20,26 @@ extension String {
         return self.rangeOfString(str)
     }
     
-    public func match(regex:NSRegularExpression) -> [String]? {
-        return regex.matchesInString(self, options: nil, range: NSRangeFromString(self)) as? [String]
+    public func match(regex:NSRegularExpression) -> [[String]]? {
+        let results = regex.matchesInString(self, options: nil, range: NSMakeRange(0, self.length())) as? [NSTextCheckingResult]
+        if let results = results {
+            var resultComponent : [[String]] = []
+            for result in results {
+                var ranges : [Range<String.Index>] = []
+                for var i = 0; i < result.numberOfRanges; i++ {
+                    ranges.append(self.convertRange(result.rangeAtIndex(i)))
+                }
+                var strings : [String] = []
+                for range in ranges {
+                    var string = self.substringWithRange(range)
+                    strings.append(string)
+                }
+                resultComponent.append(strings)
+            }
+            return resultComponent
+        } else {
+            return nil
+        }
     }
     
     public func splitBy(character : Character) -> [String]? {
@@ -53,6 +71,13 @@ extension String {
     
     public func regex() -> NSRegularExpression? {
         return NSRegularExpression(pattern: self)
+    }
+    
+    public func convertRange(range : NSRange) -> Range<String.Index> {
+        let start = advance(self.startIndex, range.location)
+        let end = advance(start, range.length)
+        let swiftRange = Range<String.Index>(start: start, end: end)
+        return swiftRange
     }
     
     subscript (r: Range<Int>) -> String {
