@@ -14,7 +14,7 @@ extension String {
         return count(self)
     }
     
-    public func search(str : String) -> Range<String.Index>? {
+    public func match(str : String) -> Range<String.Index>? {
         return self.rangeOfString(str)
     }
     
@@ -23,10 +23,6 @@ extension String {
     }
     
     public func sub(string : String, _ withString : String) -> String {
-        return self.stringByReplacingOccurrencesOfString(string, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
-    }
-    
-    public func gsub(string : String, withString : String) -> String {
         return self.stringByReplacingOccurrencesOfString(string, withString: withString, options: .LiteralSearch, range: nil)
     }
     
