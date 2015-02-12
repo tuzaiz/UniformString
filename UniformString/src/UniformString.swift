@@ -22,12 +22,24 @@ extension String {
         return split(self, {$0==character}, maxSplit: Int.max, allowEmptySlices: false)
     }
     
-    public func replace(string : String, withString : String) -> String {
+    public func sub(string : String, _ withString : String) -> String {
+        return self.stringByReplacingOccurrencesOfString(string, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
+    }
+    
+    public func gsub(string : String, withString : String) -> String {
         return self.stringByReplacingOccurrencesOfString(string, withString: withString, options: .LiteralSearch, range: nil)
     }
     
     public func trim() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+    }
+    
+    public func escape() -> String? {
+        return self.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+    }
+    
+    public func unescape() -> String? {
+        return self.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
     }
     
     subscript (r: Range<Int>) -> String {
