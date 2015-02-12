@@ -32,6 +32,13 @@ extension String {
         return self.stringByReplacingOccurrencesOfString(string, withString: withString, options: .LiteralSearch, range: nil)
     }
     
+    public func sub(r : Range<Int>, withString : String) -> String {
+        let startIndex = advance(self.startIndex, r.startIndex)
+        let endIndex = advance(startIndex, r.endIndex - r.startIndex)
+        let range = Range(start: startIndex, end: endIndex)
+        return self.stringByReplacingCharactersInRange(range, withString: withString)
+    }
+    
     public func trim() -> String {
         return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
