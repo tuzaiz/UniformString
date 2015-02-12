@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias Regex = NSRegularExpression
+
 extension String {
     
     public func length() -> Int! {
@@ -16,6 +18,10 @@ extension String {
     
     public func match(str : String) -> Range<String.Index>? {
         return self.rangeOfString(str)
+    }
+    
+    public func match(regex:NSRegularExpression) -> [String]? {
+        return regex.matchesInString(self, options: nil, range: NSRangeFromString(self)) as? [String]
     }
     
     public func splitBy(character : Character) -> [String]? {
@@ -38,6 +44,10 @@ extension String {
         return self.stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
     }
     
+    public func regex() -> NSRegularExpression? {
+        return NSRegularExpression(pattern: self)
+    }
+    
     subscript (r: Range<Int>) -> String {
         get {
             let startIndex = advance(self.startIndex, r.startIndex)
@@ -45,5 +55,11 @@ extension String {
             
             return self[Range(start: startIndex, end: endIndex)]
         }
+    }
+}
+
+extension NSRegularExpression {
+    convenience init?(pattern : String) {
+        self.init(pattern: pattern, options: .CaseInsensitive, error: nil)
     }
 }
